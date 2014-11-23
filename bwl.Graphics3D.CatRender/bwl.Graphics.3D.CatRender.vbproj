@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ABC4A29B-9F82-4E50-BC85-FACE6CC07591}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>bwl.Graphics._3D.CatRender</RootNamespace>
+    <AssemblyName>bwl.Graphics.3D.CatRender</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\debug-dll-out\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>false</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>dllOut\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <DebugSymbols>false</DebugSymbols>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="controls\3DPosition.Designer.vb">
+      <DependentUpon>3DPosition.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\3DPosition.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\CatDisplay.Designer.vb">
+      <DependentUpon>CatDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\CatDisplay.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\CatRender.Designer.vb">
+      <DependentUpon>CatRender.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\CatRender.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="render\clsCamera.vb" />
+    <Compile Include="render\clsFontBitmap.vb" />
+    <Compile Include="render\clsLighter.vb" />
+    <Compile Include="render\clsMaterial.vb" />
+    <Compile Include="render\clsModel.vb" />
+    <Compile Include="render\clsMover.vb" />
+    <Compile Include="render\clsObject.vb" />
+    <Compile Include="render\clsPixelSurface.vb" />
+    <Compile Include="render\clsRender.vb" />
+    <Compile Include="render\clsRenderDirectDraw.vb" />
+    <Compile Include="render\clsRenderSceneDraw.vb" />
+    <Compile Include="render\clsScene.vb" />
+    <Compile Include="render\clsSprite.vb" />
+    <Compile Include="render\clsTextMessage.vb" />
+    <Compile Include="render\clsTools.vb" />
+    <Compile Include="render\clsTransformMatrix.vb" />
+    <Compile Include="render\clsWaterGen.vb" />
+    <Compile Include="render\clsWeatherGen.vb" />
+    <Compile Include="render\mdlGlobal.vb" />
+    <Compile Include="render\mdlStructureFunctions.vb" />
+    <Compile Include="render\mdlStructures.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="controls\3DPosition.resx">
+      <DependentUpon>3DPosition.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\CatDisplay.resx">
+      <DependentUpon>CatDisplay.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\CatRender.resx">
+      <DependentUpon>CatRender.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pic1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pic2.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
