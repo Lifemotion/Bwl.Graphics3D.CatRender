@@ -7,7 +7,7 @@ Public Class CatRender
     Private _syncRoot As New Object
     Private _autoMove As Boolean
     Private _autoMoveStep As Single = 10
-    Public Property AutoMove() As Boolean
+    Public Property RenderAutoMove() As Boolean
         Get
             Return _autoMove
         End Get
@@ -32,7 +32,7 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property DrawingEnabled() As Boolean
+    Public Property RenderDrawingEnabled() As Boolean
         Get
             If _drawThread Is Nothing Then Return False
             Return _drawThread.IsAlive
@@ -62,7 +62,7 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property WorkingEnabled() As Boolean
+    Public Property RenderWorkingEnabled() As Boolean
         Get
             If _workThread Is Nothing Then Return False
             Return _workThread.IsAlive
@@ -113,7 +113,7 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    ReadOnly Property Scene() As Scene
+    Public ReadOnly Property RenderScene() As Scene
         Get
             Return _scene
         End Get
@@ -124,7 +124,7 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    ReadOnly Property Render() As Render3D
+    Public ReadOnly Property Render() As Render3D
         Get
             Return _scene.render
         End Get
@@ -135,7 +135,7 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    ReadOnly Property RenderSceneDraw() As Render3D.SceneDrawClass
+    Public ReadOnly Property RenderSceneDraw() As Render3D.SceneDrawClass
         Get
             Return _scene.render.SceneDraw
         End Get
@@ -147,7 +147,7 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    ReadOnly Property SyncRoot() As Object
+    Public ReadOnly Property RenderSyncRoot() As Object
         Get
             Return _syncRoot
         End Get
@@ -158,13 +158,13 @@ Public Class CatRender
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Property Camera() As Camera3D
+    Public Property RenderCamera() As Camera3D
         Get
             Return _scene.camera
         End Get
         Set(ByVal value As Camera3D)
             SyncLock _syncRoot
-                _scene.camera = Camera
+                _scene.camera = RenderCamera
             End SyncLock
         End Set
     End Property
@@ -174,7 +174,7 @@ Public Class CatRender
     ''' На время обработки поток отрисовки блокируется.
     ''' </summary>
     ''' <remarks></remarks>
-    Public Event WorkCycle()
+    Public Event RenderWorkCycle()
     Private Sub WorkThreadSub()
         Do
             SyncLock _syncRoot
@@ -190,12 +190,12 @@ Public Class CatRender
                     If display.PressedKeys(Keys.Q) Then _scene.camera.PositionY -= 10
                     If display.PressedKeys(Keys.E) Then _scene.camera.PositionY += 10
                 End If
-                RaiseEvent WorkCycle()
+                RaiseEvent RenderWorkCycle()
             End SyncLock
             Thread.Sleep(50)
         Loop
     End Sub
-    Public Event MouseMoved(ByVal offsetX As Integer, ByVal offsetY As Integer)
+    Public Event RenderMouseMoved(ByVal offsetX As Integer, ByVal offsetY As Integer)
     Private Sub display_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles display.MouseMove
         If display.MouseLocking Then
             Static lastState As Boolean
@@ -216,15 +216,15 @@ Public Class CatRender
                 If _scene.camera.Pitch > 0.5 Then _scene.camera.Pitch = 0.5
                 If _scene.camera.Pitch < -0.5 Then _scene.camera.Pitch = -0.5
             End If
-            RaiseEvent MouseMoved(offsetX, offsetY)
+            RaiseEvent RenderMouseMoved(offsetX, offsetY)
         End SyncLock
     End Sub
-    Public ReadOnly Property PressedKeys() As Boolean()
+    Public ReadOnly Property RenderPressedKeys() As Boolean()
         Get
             Return display.PressedKeys
         End Get
     End Property
-    Public Property MouseLocking() As Boolean
+    Public Property RenderMouseLocking() As Boolean
         Get
             Return display.MouseLocked
         End Get
@@ -243,6 +243,14 @@ Public Class CatRender
                 display.RefreshBitmap()
             End If
         End SyncLock
+    End Sub
+
+    Public Sub RenderRefresh()
+        Refresh()
+    End Sub
+
+    Private Sub lState_Click(sender As Object, e As EventArgs) Handles lState.Click
+
     End Sub
 End Class
 

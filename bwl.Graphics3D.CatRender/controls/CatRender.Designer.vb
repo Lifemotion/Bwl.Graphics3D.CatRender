@@ -22,14 +22,14 @@ Partial Class CatRender
     'Не изменяйте ее в редакторе исходного кода.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lState = New System.Windows.Forms.Label
-        Me.display = New CatDisplay
+        Me.lState = New System.Windows.Forms.Label()
+        Me.display = New bwl.Graphics._3D.CatRender.CatDisplay()
         Me.SuspendLayout()
         '
         'lState
         '
         Me.lState.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lState.Location = New System.Drawing.Point(-1, 482)
         Me.lState.Name = "lState"
@@ -40,8 +40,8 @@ Partial Class CatRender
         'display
         '
         Me.display.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.display.Bitmap = Nothing
         Me.display.Location = New System.Drawing.Point(1, 1)
         Me.display.MouseLocked = False

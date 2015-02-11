@@ -39,7 +39,7 @@ Namespace My.Resources
         Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("bwl.Graphics._3D.CatRender.Resources", GetType(Resources).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Bwl.Graphics3D.CatRender.Test.Resources", GetType(Resources).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -58,26 +58,6 @@ Namespace My.Resources
             Set
                 resourceCulture = value
             End Set
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property pic1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("pic1", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property pic2() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("pic2", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
         End Property
     End Module
 End Namespace
