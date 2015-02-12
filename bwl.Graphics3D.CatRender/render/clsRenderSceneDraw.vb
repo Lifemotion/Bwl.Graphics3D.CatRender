@@ -2669,18 +2669,19 @@ end_cycle:
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub Render()
+            Dim i As Integer
+            shadowsUsed = False
+            For i = 0 To shadowPlanesCount - 1
+                If shadowPlanes(i).used Then shadowsUsed = True
+            Next
+            ComputeDistance()
+            TransformCamera()
+            If shadowsUsed Then
+                ClearShadows()
+                CastShadows()
+            End If
+         
             If vertexTop > 0 Then
-                Dim i As Integer
-                shadowsUsed = False
-                For i = 0 To shadowPlanesCount - 1
-                    If shadowPlanes(i).used Then shadowsUsed = True
-                Next
-                ComputeDistance()
-                TransformCamera()
-                If shadowsUsed Then
-                    ClearShadows()
-                    CastShadows()
-                End If
                 Culling()
                 Projection()
                 If settings.sortTriangles Then SortTriangles()
@@ -2688,12 +2689,15 @@ end_cycle:
                 If settings.drawTriangles Then RenderTexture()
                 If settings.drawLines Then RenderLines()
                 '  RenderLines()
-                RenderSprites()
-                'как ты относишьс€ к кусочно-линейной интерпол€ции?
-                If environment.fog > 0 Or environment.distortionA <> 0 Then
-                    PostProcess()
-                End If
+
             End If
+
+            RenderSprites()
+            'как ты относишьс€ к кусочно-линейной интерпол€ции?
+            If environment.fog > 0 Or environment.distortionA <> 0 Then
+                PostProcess()
+            End If
+
         End Sub
         Public ReadOnly Property InfoTrianglesCount() As Integer
             Get
@@ -2820,7 +2824,7 @@ end_cycle:
                                             pixels((ty * width + tx) * 3 + 2) = (r * light) >> 8
                                             pixels((ty * width + tx) * 3 + 1) = (g * light) >> 8
                                             pixels((ty * width + tx) * 3 + 0) = (b * light) >> 8
-                                            wBuffer(ty * width + tx) = w
+                                            '   wBuffer(ty * width + tx) = w
                                         End If
                                     End If
                                 Next

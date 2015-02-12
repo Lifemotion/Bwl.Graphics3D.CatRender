@@ -1,7 +1,9 @@
 ﻿Imports bwl.Graphics._3D.CatRender
 
+
 Public Class TestForm
-    Private Sub TestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    Public Function CreateTriangleObject()
         Dim model As New Model
         ReDim model.meshes(0)
         Dim material As New Material("Test")
@@ -52,10 +54,42 @@ Public Class TestForm
         obj.model = model
         obj.type = Object3DType.model
 
+        Return obj
+    End Function
+
+    Public Function CreateSpriteObject()
+        Dim sprite As New Sprite
+
+        With sprite
+            .texture = New PixelSurface
+            .texture.LoadFromFile("..\..\point.bmp")
+            .scale = 1.0
+            '   .minimumScale = .scale
+            '   .maximumScale = .scale
+            .alphaSource = AlphaSourceType.byWhite
+            .left = 0
+            .top = 0
+            .right = .texture.Width - 1
+            .bottom = .texture.Height - 1
+        End With
+
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.sprite
+            .sprite = sprite
+            .light = New Lighter
+            .light.colorG = 100
+        End With
+        Return obj
+    End Function
+
+    Private Sub TestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    
         CatRender1.Render.SceneDraw.settings.drawLines = True
         CatRender1.Render.SceneDraw.settings.drawTriangles = False
 
-        CatRender1.RenderScene.AddObject(obj)
+        ' CatRender1.RenderScene.AddObject(CreateTriangleObject)
+        CatRender1.RenderScene.AddObject(CreateSpriteObject)
 
         CatRender1.RenderDrawingEnabled = True
         CatRender1.RenderWorkingEnabled = True
