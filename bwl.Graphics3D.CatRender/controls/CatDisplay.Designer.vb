@@ -22,22 +22,22 @@ Partial Class CatDisplay
     'Не изменяйте ее в редакторе исходного кода.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.pbDisplay = New System.Windows.Forms.PictureBox
-        Me.tbKeysDetector = New System.Windows.Forms.TextBox
-        CType(Me.pbDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.DisplayPicturebox = New System.Windows.Forms.PictureBox()
+        Me.tbKeysDetector = New System.Windows.Forms.TextBox()
+        CType(Me.DisplayPicturebox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'pbDisplay
+        'DisplayPicturebox
         '
-        Me.pbDisplay.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pbDisplay.BackColor = System.Drawing.Color.White
-        Me.pbDisplay.Location = New System.Drawing.Point(0, 0)
-        Me.pbDisplay.Name = "pbDisplay"
-        Me.pbDisplay.Size = New System.Drawing.Size(640, 480)
-        Me.pbDisplay.TabIndex = 1
-        Me.pbDisplay.TabStop = False
+        Me.DisplayPicturebox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DisplayPicturebox.BackColor = System.Drawing.Color.White
+        Me.DisplayPicturebox.Location = New System.Drawing.Point(0, 0)
+        Me.DisplayPicturebox.Name = "DisplayPicturebox"
+        Me.DisplayPicturebox.Size = New System.Drawing.Size(640, 480)
+        Me.DisplayPicturebox.TabIndex = 1
+        Me.DisplayPicturebox.TabStop = False
         '
         'tbKeysDetector
         '
@@ -52,15 +52,15 @@ Partial Class CatDisplay
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.tbKeysDetector)
-        Me.Controls.Add(Me.pbDisplay)
+        Me.Controls.Add(Me.DisplayPicturebox)
         Me.Name = "CatDisplay"
         Me.Size = New System.Drawing.Size(640, 480)
-        CType(Me.pbDisplay, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DisplayPicturebox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents pbDisplay As System.Windows.Forms.PictureBox
     Friend WithEvents tbKeysDetector As System.Windows.Forms.TextBox
+    Public WithEvents DisplayPicturebox As System.Windows.Forms.PictureBox
 
 End Class

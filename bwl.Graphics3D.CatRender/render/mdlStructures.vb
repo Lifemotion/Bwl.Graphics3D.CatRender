@@ -108,6 +108,11 @@ Public Module mdlStructures
     End Structure
     <Serializable()> _
     Public Structure Point3D
+        Public Sub New(x As Single, y As Single, z As Single)
+            Me.X = x
+            Me.Y = y
+            Me.Z = z
+        End Sub
         Dim X As Single
         Dim Y As Single
         Dim Z As Single

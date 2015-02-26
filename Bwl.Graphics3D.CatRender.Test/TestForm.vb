@@ -118,7 +118,9 @@ Public Class TestForm
 
     End Function
     Private Sub TestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    
+
+        AddHandler CatRender1.Display.DisplayPicturebox.MouseDown, AddressOf TestHandler
+
         CatRender1.Render.SceneDraw.settings.drawLines = True
         CatRender1.Render.SceneDraw.settings.drawTriangles = False
 
@@ -128,7 +130,8 @@ Public Class TestForm
         CatRender1.RenderDrawingEnabled = True
         CatRender1.RenderWorkingEnabled = True
         CatRender1.RenderAutoMove = True
-        CatRender1.RenderMouseLocking = True
+        CatRender1.RenderMouseLocking = False
+
 
     End Sub
 
@@ -139,4 +142,11 @@ Public Class TestForm
             Debug.WriteLine("uid, " + sprites(0).UID.ToString + " px, " + sprites(0).px.ToString)
         End If
     End Sub
+
+    Private Sub TestHandler(sender As Object, e As MouseEventArgs)
+        'если была правая кнопка - блокируем
+        If e.Button = Windows.Forms.MouseButtons.Right Then CatRender1.Display.MouseLocked = True
+        MsgBox(e.X.ToString + ", " + e.Y.ToString)
+    End Sub
+
 End Class

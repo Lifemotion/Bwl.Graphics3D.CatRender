@@ -10,7 +10,7 @@
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property MouseLocking() As Boolean
+    Public Property MouseLockingEnabled() As Boolean
         Get
             Return _mouseLockingEnabled
         End Get
@@ -31,28 +31,29 @@
         Set(ByVal value As Boolean)
             _mouseLocked = value
             If _mouseLocked Then
-                Cursor.Position = pbDisplay.PointToScreen(New Point(pbDisplay.Width / 2, pbDisplay.Height / 2))
-                pbDisplay.Cursor = Cursors.Cross
+                Cursor.Position = DisplayPicturebox.PointToScreen(New Point(DisplayPicturebox.Width / 2, DisplayPicturebox.Height / 2))
+                DisplayPicturebox.Cursor = Cursors.Cross
                 tbKeysDetector.Focus()
             Else
-                pbDisplay.Cursor = Cursors.Default
+                DisplayPicturebox.Cursor = Cursors.Default
                 For i As Integer = 0 To _keys.Length - 1
                     _keys(i) = False
                 Next
             End If
         End Set
     End Property
-    Private Sub pbDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbDisplay.Click
-        If MouseLocking Then MouseLocked = Not MouseLocked
+    Private Sub pbDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DisplayPicturebox.Click
+        If MouseLockingEnabled Then MouseLocked = Not MouseLocked
     End Sub
+
     Public Event MouseMoved(ByVal offsetX As Integer, ByVal offsetY As Integer)
-    Private Sub pbDisplay_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbDisplay.MouseMove
+    Private Sub pbDisplay_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles DisplayPicturebox.MouseMove
         If _mouseLocked Then
-            _mouseOffsetY += e.X - pbDisplay.Width / 2
-            _mouseOffsetY += e.Y - pbDisplay.Height / 2
-            If e.X - pbDisplay.Width / 2 <> 0 Or e.Y - pbDisplay.Height / 2 <> 0 Then
-                RaiseEvent MouseMoved(e.X - pbDisplay.Width / 2, e.Y - pbDisplay.Height / 2)
-                Cursor.Position = pbDisplay.PointToScreen(New Point(pbDisplay.Width / 2, pbDisplay.Height / 2))
+            _mouseOffsetY += e.X - DisplayPicturebox.Width / 2
+            _mouseOffsetY += e.Y - DisplayPicturebox.Height / 2
+            If e.X - DisplayPicturebox.Width / 2 <> 0 Or e.Y - DisplayPicturebox.Height / 2 <> 0 Then
+                RaiseEvent MouseMoved(e.X - DisplayPicturebox.Width / 2, e.Y - DisplayPicturebox.Height / 2)
+                Cursor.Position = DisplayPicturebox.PointToScreen(New Point(DisplayPicturebox.Width / 2, DisplayPicturebox.Height / 2))
             End If
         End If
     End Sub
@@ -60,28 +61,28 @@
     Private Sub tbKeysDetector_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbKeysDetector.KeyDown
         If _mouseLocked Then
             _keys(e.KeyCode) = True
-            If e.KeyCode = Windows.Forms.Keys.Escape Then _mouseLocked = False
+            If e.KeyCode = Windows.Forms.Keys.Escape Then MouseLocked = False
         End If
     End Sub
 
     Private Sub tbKeysDetector_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbKeysDetector.KeyUp
         If _mouseLocked Then
             _keys(e.KeyCode) = False
-            If e.KeyCode = Windows.Forms.Keys.Escape Then _mouseLocked = False
+            If e.KeyCode = Windows.Forms.Keys.Escape Then MouseLocked = False
             tbKeysDetector.Clear()
         End If
     End Sub
 
     Public Property Bitmap() As Bitmap
         Get
-            Return pbDisplay.Image
+            Return DisplayPicturebox.Image
         End Get
         Set(ByVal value As Bitmap)
-            pbDisplay.Image = value
+            DisplayPicturebox.Image = value
         End Set
     End Property
     Public Sub RefreshBitmap()
-        MeInvoke(AddressOf pbDisplay.Refresh)
+        MeInvoke(AddressOf DisplayPicturebox.Refresh)
     End Sub
     Public ReadOnly Property PressedKeys() As Boolean()
         Get

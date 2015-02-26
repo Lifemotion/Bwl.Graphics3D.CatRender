@@ -23,7 +23,7 @@ Partial Class CatRender
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.lState = New System.Windows.Forms.Label()
-        Me.display = New bwl.Graphics._3D.CatRender.CatDisplay()
+        Me.Display = New bwl.Graphics._3D.CatRender.CatDisplay()
         Me.SuspendLayout()
         '
         'lState
@@ -37,27 +37,27 @@ Partial Class CatRender
         Me.lState.TabIndex = 1
         Me.lState.Text = "Состояние"
         '
-        'display
+        'Display
         '
-        Me.display.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.Display.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.display.Bitmap = Nothing
-        Me.display.Location = New System.Drawing.Point(1, 1)
-        Me.display.MouseLocked = False
-        Me.display.MouseLocking = False
-        Me.display.MouseOffsetX = 0
-        Me.display.MouseOffsetY = 0
-        Me.display.Name = "display"
-        Me.display.Size = New System.Drawing.Size(640, 480)
-        Me.display.TabIndex = 2
+        Me.Display.Bitmap = Nothing
+        Me.Display.Location = New System.Drawing.Point(1, 1)
+        Me.Display.MouseLocked = False
+        Me.Display.MouseLockingEnabled = False
+        Me.Display.MouseOffsetX = 0
+        Me.Display.MouseOffsetY = 0
+        Me.Display.Name = "Display"
+        Me.Display.Size = New System.Drawing.Size(640, 480)
+        Me.Display.TabIndex = 2
         '
         'CatRender
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Controls.Add(Me.display)
+        Me.Controls.Add(Me.Display)
         Me.Controls.Add(Me.lState)
         Me.Name = "CatRender"
         Me.Size = New System.Drawing.Size(642, 500)
@@ -65,6 +65,6 @@ Partial Class CatRender
 
     End Sub
     Friend WithEvents lState As System.Windows.Forms.Label
-    Friend WithEvents display As CatDisplay
+    Public WithEvents Display As bwl.Graphics._3D.CatRender.CatDisplay
 
 End Class

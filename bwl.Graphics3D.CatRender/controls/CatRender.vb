@@ -17,13 +17,13 @@ Public Class CatRender
     End Property
     Private Sub InitGraphics()
         _scene.render.presentSettings.TargetType = OutputTargetTypeEnum.lastBitmapOnly
-        Dim width = Math.Floor(display.Width \ 4) * 4
+        Dim width = Math.Floor(Display.Width \ 4) * 4
         _scene.render.presentSettings.WindowWidth = width
-        _scene.render.presentSettings.WindowHeight = display.Height
+        _scene.render.presentSettings.WindowHeight = Display.Height
         _scene.Init()
         _scene.render.Present()
-        display.Bitmap = _scene.render.lastPresentedBitmap
-        display.RefreshBitmap()
+        Display.Bitmap = _scene.render.lastPresentedBitmap
+        Display.RefreshBitmap()
     End Sub
     ''' <summary>
     ''' Проводится ли отрисовка очередных кадров.
@@ -46,7 +46,7 @@ Public Class CatRender
                     _drawThread.IsBackground = True
                     _drawThread.Name = "DrawThreadCR"
                     _drawThread.Start()
-                    display.RefreshBitmap()
+                    Display.RefreshBitmap()
                 End If
             Else
                 'надо выключить
@@ -95,7 +95,7 @@ Public Class CatRender
                 SyncLock _syncRoot
                     _scene.FullDraw()
                 End SyncLock
-                display.RefreshBitmap()
+                Display.RefreshBitmap()
             End If
         Loop
     End Sub
@@ -179,16 +179,16 @@ Public Class CatRender
         Do
             SyncLock _syncRoot
                 If _autoMove Then
-                    If display.PressedKeys(Keys.Up) Then _scene.camera.Move(_autoMoveStep, 0)
-                    If display.PressedKeys(Keys.Down) Then _scene.camera.Move(-_autoMoveStep, 0)
-                    If display.PressedKeys(Keys.Left) Then _scene.camera.Move(0, -_autoMoveStep)
-                    If display.PressedKeys(Keys.Right) Then _scene.camera.Move(0, _autoMoveStep)
-                    If display.PressedKeys(Keys.W) Then _scene.camera.Move(_autoMoveStep, 0)
-                    If display.PressedKeys(Keys.S) Then _scene.camera.Move(-_autoMoveStep, 0)
-                    If display.PressedKeys(Keys.A) Then _scene.camera.Move(0, -_autoMoveStep)
-                    If display.PressedKeys(Keys.D) Then _scene.camera.Move(0, _autoMoveStep)
-                    If display.PressedKeys(Keys.Q) Then _scene.camera.PositionY -= 10
-                    If display.PressedKeys(Keys.E) Then _scene.camera.PositionY += 10
+                    If Display.PressedKeys(Keys.Up) Then _scene.camera.Move(_autoMoveStep, 0)
+                    If Display.PressedKeys(Keys.Down) Then _scene.camera.Move(-_autoMoveStep, 0)
+                    If Display.PressedKeys(Keys.Left) Then _scene.camera.Move(0, -_autoMoveStep)
+                    If Display.PressedKeys(Keys.Right) Then _scene.camera.Move(0, _autoMoveStep)
+                    If Display.PressedKeys(Keys.W) Then _scene.camera.Move(_autoMoveStep, 0)
+                    If Display.PressedKeys(Keys.S) Then _scene.camera.Move(-_autoMoveStep, 0)
+                    If Display.PressedKeys(Keys.A) Then _scene.camera.Move(0, -_autoMoveStep)
+                    If Display.PressedKeys(Keys.D) Then _scene.camera.Move(0, _autoMoveStep)
+                    If Display.PressedKeys(Keys.Q) Then _scene.camera.PositionY -= 10
+                    If Display.PressedKeys(Keys.E) Then _scene.camera.PositionY += 10
                 End If
                 RaiseEvent RenderWorkCycle()
             End SyncLock
@@ -196,11 +196,11 @@ Public Class CatRender
         Loop
     End Sub
     Public Event RenderMouseMoved(ByVal offsetX As Integer, ByVal offsetY As Integer)
-    Private Sub display_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles display.MouseMove
-        If display.MouseLocking Then
+    Private Sub display_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Display.MouseMove
+        If Display.MouseLockingEnabled Then
             Static lastState As Boolean
-            If lastState <> display.MouseLocked Then
-                If Not display.MouseLocked Then
+            If lastState <> Display.MouseLocked Then
+                If Not Display.MouseLocked Then
                     lState.Text = "Щелкните левой кнопкой для управления."
                 Else
                     lState.Text = "Управляйте с помощью клавиатуры и мыши. ESC - выход из управления."
@@ -208,7 +208,7 @@ Public Class CatRender
             End If
         End If
     End Sub
-    Private Sub MouseMovedHandler(ByVal offsetX As Integer, ByVal offsetY As Integer) Handles display.MouseMoved
+    Private Sub MouseMovedHandler(ByVal offsetX As Integer, ByVal offsetY As Integer) Handles Display.MouseMoved
         SyncLock _syncRoot
             If _autoMove Then
                 _scene.camera.Yaw += -offsetX / 100
@@ -221,26 +221,26 @@ Public Class CatRender
     End Sub
     Public ReadOnly Property RenderPressedKeys() As Boolean()
         Get
-            Return display.PressedKeys
+            Return Display.PressedKeys
         End Get
     End Property
     Public Property RenderMouseLocking() As Boolean
         Get
-            Return display.MouseLocked
+            Return Display.MouseLocked
         End Get
         Set(ByVal value As Boolean)
-            display.MouseLocking = value
+            Display.MouseLockingEnabled = value
         End Set
     End Property
 
-    Private Sub display_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles display.Load
+    Private Sub display_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Display.Load
 
     End Sub
     Public Overrides Sub Refresh()
         SyncLock _syncRoot
             If _scene.render.width > 0 Then
                 _scene.FullDraw()
-                display.RefreshBitmap()
+                Display.RefreshBitmap()
             End If
         End SyncLock
     End Sub
