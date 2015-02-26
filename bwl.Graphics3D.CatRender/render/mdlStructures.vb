@@ -114,7 +114,10 @@ Public Module mdlStructures
     End Structure
     Public Structure SpriteStruct
         Dim sprite As Sprite
+        Dim lighter As Lighter
         Dim x, y, z As Single
+        Dim px, py As Integer
+        Dim UID As Integer
     End Structure
     'Public Structure SpriteDrawStruct
     'Dim x, y, z As Single

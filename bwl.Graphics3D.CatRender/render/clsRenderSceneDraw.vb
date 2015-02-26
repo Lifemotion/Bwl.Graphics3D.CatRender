@@ -96,6 +96,8 @@ Partial Public Class Render3D
         'карты теней
         Public shadowPlanes() As ShadowPlane
         Protected shadowsUsed As Boolean
+        Public Property DebugSpritesList As New List(Of SpriteStruct)
+
         Public Sub New(ByRef parent As Render3D)
             myParent = parent
             '  currentCamera = New Camera3D
@@ -153,6 +155,7 @@ Partial Public Class Render3D
             trianglesTop = -1
             trianglesPointer = -1
             Array.Clear(trianglesBiggest.screenSize, 0, trianglesBiggestBuffer)
+            DebugSpritesList.Clear()
             '  InitializeTrianglesDraw(trianglesBiggest, trianglesBiggestBuffer)
         End Sub
         Public Sub AddLighter(ByRef lighter As LighterStruct)
@@ -201,7 +204,7 @@ Partial Public Class Render3D
         ''' <param name="y"></param>
         ''' <param name="z"></param>
         ''' <remarks></remarks>
-        Public Sub DrawSprite(ByRef sprite As Sprite, ByVal x As Single, ByVal y As Single, ByVal z As Single)
+        Public Sub DrawSprite(ByRef sprite As Sprite, ByVal x As Single, ByVal y As Single, ByVal z As Single, Optional lighter As Lighter = Nothing, Optional UID As Integer = -1)
             spritesTop += 1
             If spritesTop > spritesMaximum Then
                 spritesMaximum += spritesSizingStep
@@ -211,17 +214,21 @@ Partial Public Class Render3D
                 .x = x
                 .y = y
                 .z = z
+                .UID = UID
                 .sprite = sprite
+                .lighter = lighter
+                .px = -1
+                .py = -1
             End With
         End Sub
         Public Sub DrawObject(ByRef object3D As Object3D)
             With object3D
                 If .hidden Then Return
                 If .type = Object3DType.model Then
-                    DrawModel(.model, .modelMesh, .positionX, .positionY, .positionZ, .rotateX, .rotateY, .rotateZ, .scale, .renderMode)
+                    DrawModel(.model, .modelMesh, .positionX, .positionY, .positionZ, .rotateX, .rotateY, .rotateZ, .scale, .renderMode, .UID)
                 End If
                 If .type = Object3DType.sprite Then
-                    DrawSprite(.sprite, .positionX, .positionY, .positionZ)
+                    DrawSprite(.sprite, .positionX, .positionY, .positionZ, .light, .UID)
                 End If
                 If .type = Object3DType.light Then
                     AddLighter(.light, .positionX, .positionY, .positionZ)
@@ -244,7 +251,7 @@ Partial Public Class Render3D
         ''' <param name="az"></param>
         ''' <param name="scale"></param>
         ''' <remarks></remarks>
-        Public Overloads Sub DrawModel(ByRef model As Model, ByVal meshIndex As Integer, ByVal x As Single, ByVal y As Single, ByVal z As Single, ByVal ax As Single, ByVal ay As Single, ByVal az As Single, ByVal scale As Single, ByRef renderParameters As RenderParameters)
+        Public Overloads Sub DrawModel(ByRef model As Model, ByVal meshIndex As Integer, ByVal x As Single, ByVal y As Single, ByVal z As Single, ByVal ax As Single, ByVal ay As Single, ByVal az As Single, ByVal scale As Single, ByRef renderParameters As RenderParameters, Optional UID As Integer = -1)
             Dim mesh1, mesh2 As Integer
             Dim i As Integer
             If meshIndex >= 0 Then
@@ -1124,7 +1131,7 @@ Partial Public Class Render3D
                                 brightGstep = 0
                                 brightBstep = 0
                             End If
-                        
+
                             'уходим в рисование отрезка
                             infoPixelsWBuffered += xSpanEnd - xStart + 1
                             If special = SpecialMode.nearW Then
@@ -2680,7 +2687,7 @@ end_cycle:
                 ClearShadows()
                 CastShadows()
             End If
-         
+
             If vertexTop > 0 Then
                 Culling()
                 Projection()
@@ -2786,6 +2793,8 @@ end_cycle:
                         rScale = cameraDist / (.z + cameraDist)
                         px = (width >> 1) + .x * rScale
                         py = (height >> 1) - .y * rScale
+                        .px = px
+                        .py = py
                         rScale *= .sprite.scale
                         If rScale < .sprite.minimumScale Then rScale = .sprite.minimumScale
                         If rScale > .sprite.maximumScale Then rScale = .sprite.maximumScale
@@ -2805,13 +2814,27 @@ end_cycle:
                         'считаем освещенность
                         Dim light As Integer
                         light = ((ambientB + ambientG + ambientR) / 3)
+                        'проверяем персональный источник света
+                        Dim lightr = 255
+                        Dim lightg = 255
+                        Dim lightb = 255
+                        If .lighter IsNot Nothing Then
+                            lightr = .lighter.colorR
+                            lightg = .lighter.colorG
+                            lightb = .lighter.colorB
+                        End If
+                        'считаем остальное
                         light += lighterPoint.intense
                         light -= lighterPoint.attenutionA * 5 * ((lighterPoint.x - .x) * (lighterPoint.x - .x) + (lighterPoint.y - .y) * (lighterPoint.y - .y) + (lighterPoint.z - .z) * (lighterPoint.z - .z))
                         If light > 255 Then light = 255
                         If light < 80 Then light = 80
-                        '   light = 255
+                        'light = 255
+                        lightr = lightr * light >> 8
+                        lightg = lightg * light >> 8
+                        lightb = lightb * light >> 8
                         'если после обрезаний на экране хоть что-то осталось
                         If tx2 > tx1 Then
+                            DebugSpritesList.Add(sprites(i))
                             For ty = ty1 To ty2
                                 For tx = tx1 To tx2
                                     If w > wBuffer(ty * width + tx) Then
@@ -2820,10 +2843,12 @@ end_cycle:
                                         r = texture((sy * textureWidth + sx) * 3 + 2)
                                         g = texture((sy * textureWidth + sx) * 3 + 1)
                                         b = texture((sy * textureWidth + sx) * 3 + 0)
-                                        If r <> 255 AndAlso b <> 255 AndAlso g <> 0 Then
-                                            pixels((ty * width + tx) * 3 + 2) = (r * light) >> 8
-                                            pixels((ty * width + tx) * 3 + 1) = (g * light) >> 8
-                                            pixels((ty * width + tx) * 3 + 0) = (b * light) >> 8
+
+
+                                        If r <> 255 Or b <> 255 Or g <> 0 Then
+                                            pixels((ty * width + tx) * 3 + 2) = (r * lightr) >> 8
+                                            pixels((ty * width + tx) * 3 + 1) = (g * lightg) >> 8
+                                            pixels((ty * width + tx) * 3 + 0) = (b * lightb) >> 8
                                             '   wBuffer(ty * width + tx) = w
                                         End If
                                     End If

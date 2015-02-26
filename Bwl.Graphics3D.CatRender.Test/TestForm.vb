@@ -66,7 +66,7 @@ Public Class TestForm
             .scale = 1.0
             '   .minimumScale = .scale
             '   .maximumScale = .scale
-            .alphaSource = AlphaSourceType.byWhite
+            .alphaSource = AlphaSourceType.byPurple
             .left = 0
             .top = 0
             .right = .texture.Width - 1
@@ -77,12 +77,46 @@ Public Class TestForm
         With obj
             .type = Object3DType.sprite
             .sprite = sprite
+            'light не обязателен. Если он есть, будет использоваться для перекраски
             .light = New Lighter
-            .light.colorG = 100
+            .light.colorR = 255
+            .light.colorG = 255
+            .light.colorB = 0
         End With
         Return obj
-    End Function
 
+    End Function
+    Public Function CreateSpriteObject2()
+        Dim sprite As New Sprite
+
+        With sprite
+            .texture = New PixelSurface
+            .texture.LoadFromFile("..\..\point.bmp")
+            .scale = 1.0
+            '   .minimumScale = .scale
+            '   .maximumScale = .scale
+            .alphaSource = AlphaSourceType.byPurple
+            .left = 0
+            .top = 0
+            .right = .texture.Width - 1
+            .bottom = .texture.Height - 1
+        End With
+
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.sprite
+            .sprite = sprite
+            .positionX = -100
+            .positionY = -100
+            'light не обязателен. Если он есть, будет использоваться для перекраски
+            .light = New Lighter
+            .light.colorR = 255
+            .light.colorG = 0
+            .light.colorB = 0
+        End With
+        Return obj
+
+    End Function
     Private Sub TestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     
         CatRender1.Render.SceneDraw.settings.drawLines = True
@@ -90,11 +124,19 @@ Public Class TestForm
 
         ' CatRender1.RenderScene.AddObject(CreateTriangleObject)
         CatRender1.RenderScene.AddObject(CreateSpriteObject)
-
+        CatRender1.RenderScene.AddObject(CreateSpriteObject2)
         CatRender1.RenderDrawingEnabled = True
         CatRender1.RenderWorkingEnabled = True
         CatRender1.RenderAutoMove = True
         CatRender1.RenderMouseLocking = True
 
+    End Sub
+
+    Private Sub CatRender1_RenderWorkCycle() Handles CatRender1.RenderWorkCycle
+        Dim sprites = CatRender1.RenderSceneDraw.DebugSpritesList
+        Debug.WriteLine(sprites.Count)
+        If sprites.Count > 0 Then
+            Debug.WriteLine("uid, " + sprites(0).UID.ToString + " px, " + sprites(0).px.ToString)
+        End If
     End Sub
 End Class
