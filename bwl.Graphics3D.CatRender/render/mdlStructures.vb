@@ -103,9 +103,14 @@ Public Module mdlStructures
     'только зря написал
     <Serializable()> _
     Public Structure Point2D
+        Public Sub New(x As Single, y As Single)
+            Me.X = x
+            Me.Y = y
+        End Sub
         Dim X As Single
         Dim Y As Single
     End Structure
+
     <Serializable()> _
     Public Structure Point3D
         Public Sub New(x As Single, y As Single, z As Single)

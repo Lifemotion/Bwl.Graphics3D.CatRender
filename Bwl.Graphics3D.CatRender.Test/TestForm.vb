@@ -145,8 +145,11 @@ Public Class TestForm
 
     Private Sub TestHandler(sender As Object, e As MouseEventArgs)
         'если была правая кнопка - блокируем
-        If e.Button = Windows.Forms.MouseButtons.Right Then CatRender1.Display.MouseLocked = True
-        MsgBox(e.X.ToString + ", " + e.Y.ToString)
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            CatRender1.Display.MouseLocked = True
+        Else
+            MsgBox(e.X.ToString + ", " + e.Y.ToString)
+        End If
     End Sub
 
 End Class
