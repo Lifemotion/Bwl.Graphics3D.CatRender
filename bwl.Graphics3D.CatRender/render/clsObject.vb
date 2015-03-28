@@ -23,18 +23,22 @@ Public Class Object3D
     Public name As String
     Private myUID As Integer
     Private Shared UIDgen As Integer
+    Private Shared UIDgenSync As New Object
     Sub New(ByVal objectName As String)
+        Me.New()
         name = objectName
-        Init()
     End Sub
     Sub New()
-        Init()
+        SyncLock UIDgenSync
+            scale = 1
+            modelMesh = -1
+            UIDgen += 1
+            myUID = UIDgen
+        End SyncLock
     End Sub
     Private Sub Init()
-        scale = 1
-        modelMesh = -1
-        UIDgen += 1
-        myUID = UIDgen
+
+      
     End Sub
     Public ReadOnly Property UID() As Integer
         Get

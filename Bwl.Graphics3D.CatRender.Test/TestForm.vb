@@ -64,8 +64,8 @@ Public Class TestForm
             .texture = New PixelSurface
             .texture.LoadFromFile("..\..\point.bmp")
             .scale = 1.0
-            '   .minimumScale = .scale
-            '   .maximumScale = .scale
+            ' .minimumScale = .scale
+            ' .maximumScale = .scale
             .alphaSource = AlphaSourceType.byPurple
             .left = 0
             .top = 0

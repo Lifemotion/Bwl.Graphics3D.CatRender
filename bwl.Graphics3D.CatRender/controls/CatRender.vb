@@ -92,13 +92,20 @@ Public Class CatRender
         Do
             Thread.Sleep(20)
             If _scene.render.width > 0 Then
+                '      Try
                 SyncLock _syncRoot
                     _scene.FullDraw()
                 End SyncLock
                 Display.RefreshBitmap()
+                '  Catch ex As Exception
+                'If Not SuppressErrorsInDrawThread Then Throw ex
+                '  End Try
             End If
         Loop
     End Sub
+
+    ' Public Property SuppressErrorsInDrawThread As Boolean = True
+
     Private Sub CatRenders_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         InitGraphics()
     End Sub
