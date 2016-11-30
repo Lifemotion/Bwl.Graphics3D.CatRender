@@ -2735,11 +2735,15 @@ end_cycle:
                 ComputeDistance()
             End Set
         End Property
+        Public Property UseFowByWidth As Boolean
         Private Sub ComputeDistance()
             Dim result As Single
             Static lastFOV As Single
             If lastFOV <> currentCamera.FOV Then
                 result = (myParent.diagonal / (2 * Math.Tan(currentCamera.FOV / 360 * Math.PI)))
+                If UseFowByWidth Then
+                    result = (myParent.width / (2 * Math.Tan(currentCamera.FOV / 360 * Math.PI)))
+                End If
                 cameraDist = result
                 PrepareCameraVectors()
             End If
