@@ -131,4 +131,31 @@ Public Class TransformMatrix
             Next
         Next
     End Sub
+
+    Public Function TransformVector(vector As Point3D) As Point3D
+        Dim m11, m12, m13, m21, m22, m23, m31, m32, m33, m14, m24, m34 As Single
+        m11 = Me.matrix(0, 0)
+        m12 = Me.matrix(0, 1)
+        m13 = Me.matrix(0, 2)
+        m21 = Me.matrix(1, 0)
+        m22 = Me.matrix(1, 1)
+        m23 = Me.matrix(1, 2)
+        m31 = Me.matrix(2, 0)
+        m32 = Me.matrix(2, 1)
+        m33 = Me.matrix(2, 2)
+        m14 = Me.matrix(0, 3)
+        m24 = Me.matrix(1, 3)
+        m34 = Me.matrix(2, 3)
+        'развернем также исходный вектор
+        Dim px, py, pz As Single
+        px = vector.X
+        py = vector.Y
+        pz = vector.Z
+
+        Dim nv As New Point3D
+        nv.X = px * m11 + py * m12 + pz * m13 + m14
+        nv.Y = px * m21 + py * m22 + pz * m23 + m24
+        nv.Z = px * m31 + py * m32 + pz * m33 + m34
+        Return nv
+    End Function
 End Class

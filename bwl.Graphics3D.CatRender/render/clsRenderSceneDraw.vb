@@ -2749,13 +2749,18 @@ end_cycle:
             End If
             lastFOV = currentCamera.FOV
         End Sub
+
+
+
+        Public ReadOnly Property LastRenderTransformMatrix As TransformMatrix
+
         Private Sub TransformCamera()
             With currentCamera
-                matrixTransition1.Transition(-.PositionX, -.PositionY, -.PositionZ)
+                matrixTransition1.Transition(- .PositionX, - .PositionY, - .PositionZ)
                 'matrixTransition1.Transition(0, 0, cameraDist)
-                matrixRotY.RotationY(-.Yaw)
-                matrixRotX.RotationX(-.Pitch)
-                matrixRotZ.RotationZ(-.Roll)
+                matrixRotY.RotationY(- .Yaw)
+                matrixRotX.RotationX(- .Pitch)
+                matrixRotZ.RotationZ(- .Roll)
                 matrixTransition2.Transition(0, 0, -cameraDist)
             End With
             matrixFinal.CopyFrom(matrixTransition2)
@@ -2763,10 +2768,24 @@ end_cycle:
             matrixFinal.MulOnMatrix(matrixRotZ)
             matrixFinal.MulOnMatrix(matrixRotY)
             matrixFinal.MulOnMatrix(matrixTransition1)
+            _LastRenderTransformMatrix = New TransformMatrix
+            LastRenderTransformMatrix.CopyFrom(matrixFinal)
             TransformVertexBuffer(matrixFinal, True)
             TransformLighters(matrixFinal)
             TransformSpritesBuffer(matrixFinal)
         End Sub
+
+        Public Function GetScreenCoords(point As Point3D) As Point2D
+            Dim transfPoint = LastRenderTransformMatrix.TransformVector(point)
+            With transfPoint
+                Dim rScale As Single = cameraDist / (.Z + cameraDist)
+                Dim px As Single = (width / 2.0) + .X * rScale
+                Dim py As Single = (height / 2.0) - .Y * rScale
+                Dim result As New Point2D(px, py)
+                Return result
+            End With
+        End Function
+
         Private Sub RenderSprites()
             Dim px, py As Integer
             Dim rScale As Single
@@ -2863,6 +2882,7 @@ end_cycle:
                 End With
             Next i
         End Sub
+
         Private Sub TransformSpritesBuffer(ByRef matrix As TransformMatrix)
             Dim m11, m12, m13, m21, m22, m23, m31, m32, m33, m14, m24, m34 As Single
             m11 = matrix.matrix(0, 0)
