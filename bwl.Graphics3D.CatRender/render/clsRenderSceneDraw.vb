@@ -1234,8 +1234,6 @@ end_cycle:
             Return alpha
         End Function
 
-
-
         ''' <summary>
         ''' Отрисовать треугольник модели по его начальной вершине
         ''' </summary>
@@ -1252,6 +1250,7 @@ end_cycle:
             Dim settings As RenderParameters = trianglesCulled.renderSettings(triangleNum)
             Dim useBilinear As Boolean
             Dim useLightning As Boolean
+            Dim useTexturing As Boolean
             If settings.lighting = LightingMode.full Then useLightning = True
             If settings.texturing = TexturingMode.bilinear Then useBilinear = True
             'прежде всего - проверяем буфер наибольших треугольников
@@ -1420,7 +1419,8 @@ end_cycle:
                 'If y1 > y2 Or y2 > y3 Then Stop
                 ' Dim color As Color = Drawing.Color.Gray
                 Dim pixels() As Byte = myParent.drawBuffer.pixels2
-                Dim texturePixelsMipMap() As Byte = texturePixels(mipMap).pixels2
+                Dim texturePixelsMipMap() As Byte
+                If useTexturing Then texturePixelsMipMap = texturePixels(mipMap).pixels2
                 'экранные
                 Dim y, x As Integer
                 'начало, конец, шаг строки точек
@@ -1855,7 +1855,39 @@ end_cycle:
                             '   brightB = fixedI
                             'уходим в рисование отрезка
                             infoPixelsWBuffered += xSpanEnd - xStart + 1
-                            If useBilinear Then
+                            If useTexturing = False Then
+                                r = ((materialColor.R * brightR) >> 16)
+                                g = ((materialColor.G * brightG) >> 16)
+                                b = ((materialColor.B * brightB) >> 16)
+                                If r > 255 Then r = 255
+                                If g > 255 Then g = 255
+                                If b > 255 Then b = 255
+                                If r < 0 Then r = 0
+                                If g < 0 Then g = 0
+                                If b < 0 Then b = 0
+
+                                Dim k As Integer
+                                For k = xStart To xSpanEnd
+                                    If w > wBuffer(k + widthOffset) Then
+                                        iv = (sv >> 16) And (textureSizeYLocal - 1)
+                                        iu = (su >> 16) And (textureSizeXLocal - 1)
+                                        pixels(widthOffset3 + 3 * k + 2) = r
+                                        pixels(widthOffset3 + 3 * k + 1) = g '((texturePixelsMipMap(iv * textureSizeXLocal * 3 + iu * 3 + 1) * bg) >> 8)
+                                        pixels(widthOffset3 + 3 * k + 0) = b '((texturePixelsMipMap(iv * textureSizeXLocal * 3 + iu * 3 + 2) * bb) >> 8)
+                                        wBuffer(k + widthOffset) = w
+                                        infoPixelsDrawed += 1
+                                        '     If w < wBufferHigh(wBHoffset + (k >> 6)) Or wBufferHigh(wBHoffset + (k >> 6)) = 0 Then
+                                        '      wBufferHigh(wBHoffset + (k >> 6)) = w
+                                        ' End If
+                                    End If
+                                    su += us
+                                    sv += vs
+                                    w += wStep
+                                    brightR += brightRstep
+                                    brightG += brightGstep
+                                    brightB += brightBstep
+                                Next
+                            ElseIf useBilinear Then
                                 For x = xStart To xSpanEnd
                                     If w > wBuffer(x + widthOffset) Then
                                         iu = su >> 8
@@ -1988,6 +2020,7 @@ end_cycle:
                 End If
             End If
         End Sub
+
         Private Sub DrawTriangleSimple(ByVal triangleNum As Integer)
             Dim startVertex As Integer = triangleNum * 3
             Dim settings As RenderParameters = trianglesCulled.renderSettings(triangleNum)
@@ -2647,13 +2680,24 @@ end_cycle:
             End If
 
         End Sub
+
+        Dim materialColor As Color
         Protected Sub ChangeTexture(ByVal material As Material)
             materialUID = material.UID
-            texturePixels = material.texturePixels
-            textureUse = material.textureUsed
-            textureMipMap = material.maximumMipMapLevel
-            texturePixels(0).GetSize(textureSizeX, textureSizeY)
+            materialColor = material.color
+            If material.textureUsed Then
+                textureUse = True
+                texturePixels = material.texturePixels
+                textureMipMap = material.maximumMipMapLevel
+                texturePixels(0).GetSize(textureSizeX, textureSizeY)
+            Else
+                textureUse = False
+                texturePixels = Nothing
+                ' textureMipMap = material.maximumMipMapLevel
+                'texturePixels(0).GetSize(textureSizeX, textureSizeY)
+            End If
         End Sub
+
         ''' <summary>
         ''' Обнулить W и Z-буфер в начале рисования сцены
         ''' </summary>

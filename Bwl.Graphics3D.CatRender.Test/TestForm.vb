@@ -3,12 +3,19 @@
 
 Public Class TestForm
 
-    Public Function CreateTriangleObject()
+    Public Function CreateTriangleObject2()
+        Dim obj = CreateTriangleObject()
+        obj.rotateY = 100
+        Return obj
+    End Function
+
+    Public Function CreateTriangleObject() As Object3D
         Dim model As New Model
         ReDim model.meshes(0)
         Dim material As New Material("Test")
         With material
             .textureUsed = False
+            .color = Color.Red
         End With
         With model.meshes(0)
             model.materialsLib = {material}
@@ -117,14 +124,50 @@ Public Class TestForm
         Return obj
 
     End Function
+
+    Public Function CreateLighterObject()
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.light
+            .positionX = 100
+            .positionY = 100
+            .light = New Lighter
+            .light.type = LighterTypeEnum.ambient
+            .light.colorR = 100
+            .light.colorG = 100
+            .light.colorB = 100
+        End With
+        Return obj
+    End Function
+    Public Function CreateLighterObject2()
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.light
+            .positionX = 0
+            .positionY = -100
+            .light = New Lighter
+            .light.intense = 1000
+            .light.attenutionA = 0.0
+            .light.attenutionB = 0.0
+            .light.type = LighterTypeEnum.point
+            .light.colorR = 255
+            .light.colorG = 255
+            .light.colorB = 255
+        End With
+        Return obj
+    End Function
+
     Private Sub TestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         AddHandler CatRender1.Display.DisplayPicturebox.MouseDown, AddressOf TestHandler
-
+        '  CatRender1.Render.SceneDraw.
+        CatRender1.Render.SceneDraw.defaults.lighting = LightingMode.full
         CatRender1.Render.SceneDraw.settings.drawLines = True
-        CatRender1.Render.SceneDraw.settings.drawTriangles = False
-
-        ' CatRender1.RenderScene.AddObject(CreateTriangleObject)
+        CatRender1.Render.SceneDraw.settings.drawTriangles = True
+        CatRender1.RenderScene.AddObject(CreateLighterObject)
+        CatRender1.RenderScene.AddObject(CreateLighterObject2)
+        CatRender1.RenderScene.AddObject(CreateTriangleObject)
+        CatRender1.RenderScene.AddObject(CreateTriangleObject2)
         CatRender1.RenderScene.AddObject(CreateSpriteObject)
         CatRender1.RenderScene.AddObject(CreateSpriteObject2)
         CatRender1.RenderDrawingEnabled = True

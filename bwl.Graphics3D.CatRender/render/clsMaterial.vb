@@ -1,5 +1,6 @@
 Public Class Material
     Public name As String
+    Public color As Color
     Public textureName As String
     Public textureUsed As Boolean
     Public texturePixels() As PixelSurface
