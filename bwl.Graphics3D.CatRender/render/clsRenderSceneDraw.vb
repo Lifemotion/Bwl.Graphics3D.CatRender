@@ -1419,7 +1419,7 @@ end_cycle:
                 'If y1 > y2 Or y2 > y3 Then Stop
                 ' Dim color As Color = Drawing.Color.Gray
                 Dim pixels() As Byte = myParent.drawBuffer.pixels2
-                Dim texturePixelsMipMap() As Byte
+                Dim texturePixelsMipMap() As Byte = Nothing
                 If useTexturing Then texturePixelsMipMap = texturePixels(mipMap).pixels2
                 'экранные
                 Dim y, x As Integer

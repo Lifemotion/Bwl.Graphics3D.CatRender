@@ -46,5 +46,77 @@ Public Class Object3D
         End Get
     End Property
 
+    Public Shared Function CreateModelObject(model As Model, x As Single, y As Single, z As Single, rx As Single, ry As Single, rz As Single) As Object3D
+        Dim obj As New Object3D
+        obj.model = model
+        obj.type = Object3DType.model
+        obj.positionX = x
+        obj.positionY = y
+        obj.positionZ = z
+        obj.rotateX = rx
+        obj.rotateY = ry
+        obj.rotateZ = rz
+        Return obj
+    End Function
+
+    Public Shared Function CreateAmbientLightObject(color As Color) As Object3D
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.light
+            .light = New Lighter
+            .light.type = LighterTypeEnum.ambient
+            .light.colorR = color.R
+            .light.colorG = color.G
+            .light.colorB = color.B
+        End With
+        Return obj
+    End Function
+
+    Public Shared Function CreatePointLightObject(color As Color, x As Single, y As Single, z As Single, intense As Single) As Object3D
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.light
+            .light = New Lighter
+            .light.type = LighterTypeEnum.point
+            .light.intense = intense
+            .light.colorR = color.R
+            .light.colorG = color.G
+            .light.colorB = color.B
+            .positionX = x
+            .positionY = y
+            .positionZ = z
+        End With
+        Return obj
+    End Function
+
+    Public Shared Function CreateSpriteObject(sprite As Sprite, x As Single, y As Single, z As Single)
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.sprite
+            .sprite = sprite
+            .positionX = x
+            .positionY = y
+            .positionZ = z
+        End With
+        Return obj
+    End Function
+
+    Public Shared Function CreateSpriteObject(sprite As Sprite, x As Single, y As Single, z As Single,
+                                               recolor As Color) As Object3D
+        Dim obj As New Object3D
+        With obj
+            .type = Object3DType.sprite
+            .sprite = sprite
+            .positionX = x
+            .positionY = y
+            .positionZ = z
+            'light не обязателен. Если он есть, будет использоваться для перекраски
+            .light = New Lighter
+            .light.colorR = recolor.R
+            .light.colorG = recolor.G
+            .light.colorB = recolor.B
+        End With
+        Return obj
+    End Function
 
 End Class

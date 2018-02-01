@@ -59,6 +59,7 @@ Public Class Material
             Next
         Next
     End Sub
+
     Public Sub MakeMipMaps(Optional ByVal maximumDownLevel As Integer = 7)
         Dim i As Integer
         For i = 0 To maximumDownLevel - 1
@@ -66,6 +67,7 @@ Public Class Material
             maximumMipMapLevel = i
         Next
     End Sub
+
     Public Function GetCopy() As Material
         Dim material As New Material
         With material
@@ -78,6 +80,22 @@ Public Class Material
             Next
             .textureUsed = textureUsed
         End With
+        Return material
+    End Function
+
+    Public Shared Function CreateMaterial(color As Color) As Material
+        Dim material As New Material
+        material.textureUsed = False
+        material.color = color
+        material.maximumMipMapLevel = 0
+        Return material
+    End Function
+
+    Public Shared Function CreateMaterial(texture As PixelSurface) As Material
+        Dim material As New Material
+        material.texturePixels(0) = texture
+        material.textureUsed = True
+        material.maximumMipMapLevel = 0
         Return material
     End Function
 End Class
