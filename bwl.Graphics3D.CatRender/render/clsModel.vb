@@ -472,7 +472,7 @@ Public Class Model
                 y2 = .Vertexes.pY(v3) - .Vertexes.pY(v1)
                 z2 = .Vertexes.pZ(v3) - .Vertexes.pZ(v1)
                 CrossProduct(x1, y1, z1, x2, y2, z2, xR, yR, zR, True)
-                If zR > 1 Then Stop
+                'If zR > 1 Then Stop
                 .Triangles.nX(i) = xR
                 .Triangles.nY(i) = yR
                 .Triangles.nZ(i) = zR
@@ -494,7 +494,7 @@ Public Class Model
                     .Vertexes.nX(i) /= .Vertexes.temp(i)
                     .Vertexes.nY(i) /= .Vertexes.temp(i)
                     .Vertexes.nZ(i) /= .Vertexes.temp(i)
-                    If .Vertexes.nZ(i) > 1 Then Stop
+                    'If .Vertexes.nZ(i) > 1 Then Stop
                 End If
             Next
         End With
